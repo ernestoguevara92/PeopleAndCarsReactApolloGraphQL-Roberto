@@ -5,6 +5,8 @@ const getStyles = () => ({
     card: {
         width: '500px',
         backgroundColor: '#f0f2f5',
+        fontSize: 18,
+        fontWeight: '700',
     }
 })
 
