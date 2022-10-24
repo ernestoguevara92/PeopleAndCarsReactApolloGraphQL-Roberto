@@ -1,4 +1,7 @@
-const people = [
+import { gql } from 'apollo-server-express';
+import { find, remove } from 'lodash';
+
+const People = [
   {
     id: '1',
     firstName: 'Bill',
@@ -16,7 +19,7 @@ const people = [
   }
 ]
 
-const cars = [
+const Cars = [
   {
     id: '1',
     year: '2019',
@@ -90,3 +93,53 @@ const cars = [
     personId: '3'
   }
 ]
+
+const typeDefs = gql`
+  type Person {
+    id: String!
+    firstName: String
+    lastName: String
+  }
+
+  type Car {
+    id: String!
+    year: String
+    make: String
+    model: String
+    price: String
+    personId: String!
+  }
+
+  type Query {
+    person(id: String!): Person
+    people: [Person]
+
+    car(id: String!): Car
+    cars: [Car]
+  }
+
+  type Mutation {
+    addPerson(id: String!, firstName: String!, lastName: String!): Person
+    updatePerson(id: String!, firstName: String, lastName: String): Person
+    removePerson(id: String!): Person
+
+    addCar(id: String!, year: String!, make: String!, model: String!, price: String!, personId: String!): Car
+    updateCar(id: String!, year: String, make: String, model: String, price: String, personId: String): Car
+    removeCar(personId: String!): Car
+  }
+`
+
+const resolvers = {
+  Query: {
+    person(parent, args, context, info) {
+      return find(People, { id: args.id }) 
+    },
+    people: () => People,
+    car(parent, args, context, info) {
+      return find(Cars, { id: args.id})
+    },
+    cars: () => Cars
+  }
+}
+
+export { typeDefs, resolvers };
