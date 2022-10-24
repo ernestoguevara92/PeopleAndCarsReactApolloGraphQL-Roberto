@@ -1,5 +1,5 @@
 import { gql } from 'apollo-server-express';
-import { find, remove } from 'lodash';
+import { find, remove, filter } from 'lodash';
 
 const People = [
   {
@@ -126,7 +126,8 @@ const typeDefs = gql`
 
     addCar(id: String!, year: String!, make: String!, model: String!, price: String!, personId: String!): Car
     updateCar(id: String!, year: String, make: String, model: String, price: String, personId: String): Car
-    removeCar(personId: String!): Car
+    removeCar(id: String!): Car
+    removePersonCars(personId: String!): [Car]
   }
 `
 
@@ -177,6 +178,58 @@ const resolvers = {
       })
 
       return removedPerson
+    },
+    addCar: (root, args) => {
+      const newCar = {
+        id: args.id,
+        year: args.year,
+        make: args.make,
+        model: args.model,
+        price: args.price,
+        personId: args.personId
+      }
+      Cars.push(newCar)
+      return newCar
+    },
+    updateCar: (root, args) => {
+      const car = find(Cars, { id: args.id })
+
+      if (!car) {
+        throw new Error(`Couldn't find car with id ${args.id}`)
+      }
+
+      car.year = args.year
+      car.make = args.make
+      car.model = args.model
+      car.price = args.price
+      car.personId = args.personId
+      return car
+    },
+    removeCar: (root, args) => {
+      const removedCar = find(Cars, { id: args.id })
+
+      if (!removedCar) {
+        throw new Error(`Couldn't find car with id ${args.id}`)
+      }
+
+      remove(Cars, car => {
+        return car.id === args.id
+      })
+
+      return removedCar
+    },
+    removePersonCars: (root, args) => {
+      const removedCars = filter(Cars, { personId: args.personId })
+
+      if (!removedCars) {
+        throw new Error(`Couldn't find cars for person with ID: ${args.personId}`)
+      }
+
+      remove(Cars, car => {
+        return car.personId === args.personId
+      })
+
+      return removedCars
     }
   }
 }
