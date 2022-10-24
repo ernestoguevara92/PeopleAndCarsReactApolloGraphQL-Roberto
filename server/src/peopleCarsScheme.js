@@ -116,6 +116,7 @@ const typeDefs = gql`
 
     car(id: String!): Car
     cars: [Car]
+    personCars(personId: String!): [Car]
   }
 
   type Mutation {
@@ -138,7 +139,45 @@ const resolvers = {
     car(parent, args, context, info) {
       return find(Cars, { id: args.id})
     },
+    personCars(parent, args, context, info) {
+      return Cars.filter(car => car.personId === args.personId)
+    },
     cars: () => Cars
+  },
+  Mutation: {
+    addPerson: (root, args) => {
+      const newPerson = {
+        id: args.id,
+        firstName: args.firstName,
+        lastName: args.lastName
+      }
+      People.push(newPerson)
+      return newPerson
+    },
+    updatePerson: (root, args) => {
+      const person = find(People, { id: args.id })
+
+      if (!person) {
+        throw new Error(`Couldn't find person with id ${args.id}`)
+      }
+
+      person.firstName = args.firstName
+      person.lastName = args.lastName
+      return person
+    },
+    removePerson: (root, args) => {
+      const removedPerson = find(People, { id: args.id })
+
+      if (!removedPerson) {
+        throw new Error(`Couldn't find person with id ${args.id}`)
+      }
+
+      remove(People, person => {
+        return person.id === args.id
+      })
+
+      return removedPerson
+    }
   }
 }
 
