@@ -3,6 +3,7 @@ import { Card } from 'antd'
 import { EditOutlined } from '@ant-design/icons'
 import RemovePerson from '../buttons/RemovePerson'
 import UpdatePerson from '../forms/UpdatePerson'
+import Car from './Car'
 
 const getStyles = () => ({
     card: {
@@ -13,7 +14,7 @@ const getStyles = () => ({
     }
 })
 
-const Contact = props => {
+const Person = props => {
     const { id, firstName, lastName } = props;
     const styles = getStyles();
 
@@ -36,10 +37,11 @@ const Contact = props => {
                         <RemovePerson id={id} />
                     ]}>
                     {firstName} {lastName}
+                    <Car id={id} />
                 </Card>
             }
         </>
     )
 }
 
-export default Contact;
+export default Person;
