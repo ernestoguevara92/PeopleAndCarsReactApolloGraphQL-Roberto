@@ -22,11 +22,11 @@ const People = () => {
 
     return (
         <>
-        <AddCar />
+        <AddCar people={data.people}/>
         <List grid={{gutter: 20, column: 1}} style={styles.list}>
             {data.people.map(({id, firstName, lastName}) => (
                 <List.Item key={id}>
-                    <Person id={id} firstName={firstName} lastName={lastName} />
+                    <Person id={id} firstName={firstName} lastName={lastName} people={data.people} />
                 </List.Item>
             ))}
         </List>

@@ -7,8 +7,8 @@ import { ADD_CAR, GET_CARS } from '../../queries';
 
 const { Option } = Select;
 
-const AddCar = () => {
-    //const [id] = useState(uuidv4());
+const AddCar = props => {
+    const { people } = props;
     const [addCar] = useMutation(ADD_CAR);
 
     const [form] = Form.useForm();
@@ -43,28 +43,31 @@ const AddCar = () => {
             onFinish={onFinish}
             name='add-car-form' size='medium'
             layout='inline' 
-            style={{marginBottom: '40px'}}>
-            <Form.Item name='make' style={{marginBottom: '8px', width: '17%'}}
+            style={{marginBottom: '40px', width: '100%'}}>
+            <Form.Item name='make' style={{marginBottom: '8px', width: '18%'}}
                rules={[{ required: true, message: 'Please input car make!'}]}>
                 <Input placeholder='Toyota' />
             </Form.Item>
-            <Form.Item name='model' style={{marginBottom: '8px', width: '17%'}}
+            <Form.Item name='model' style={{marginBottom: '8px', width: '18%'}}
                rules={[{ required: true, message: 'Please input car model!'}]}>
                 <Input placeholder='Corolla' />
             </Form.Item>
             <Form.Item name='year' style={{marginBottom: '8px'}}
                rules={[{ required: true, message: 'Please input car year!'}]}>
-                <InputNumber placeholder='2022' max={2022}/>
+                <InputNumber placeholder='2022' max={2022} min={1800} />
             </Form.Item>
             <Form.Item name='price' style={{marginBottom: '8px'}}
                rules={[{ required: true, message: 'Please input car price!'}]}>
-                <InputNumber placeholder='$40000.00' formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                <InputNumber min={1000} formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     parser={(value) => value.replace(/\$\s?|(,*)/g, '')}/>
             </Form.Item>
-            <Form.Item name='personId' style={{marginBottom: '8px', width: '19%'}}
+            <Form.Item name='personId' style={{marginBottom: '8px', width: '18%'}}
                rules={[{ required: true, message: 'Please select person ID!'}]}>
-                <Select>
-                    <Option value="3">Steven</Option>
+                <Select placeholder="Select Person">
+                    { people.map(person => 
+                        <Option key={person.id} value={person.id}>{person.firstName} {person.lastName}</Option>
+                    )}
+                  {/* <Option value="3">Steven</Option> */}
                 </Select>
             </Form.Item>
             <Form.Item shouldUpdate={true}>

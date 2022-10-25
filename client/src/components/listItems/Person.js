@@ -15,7 +15,7 @@ const getStyles = () => ({
 })
 
 const Person = props => {
-    const { id, firstName, lastName } = props;
+    const { id, firstName, lastName, people } = props;
     const styles = getStyles();
 
     const [editMode, setEditMode] = useState(false);
@@ -37,7 +37,7 @@ const Person = props => {
                         <RemovePerson id={id} />
                     ]}>
                     {firstName} {lastName}
-                    <Car id={id} />
+                    <Car id={id} people={people} />
                 </Card>
             }
         </>
