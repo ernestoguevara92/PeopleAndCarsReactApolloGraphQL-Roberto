@@ -4,6 +4,7 @@ import { EditOutlined } from '@ant-design/icons'
 import RemovePerson from '../buttons/RemovePerson'
 import UpdatePerson from '../forms/UpdatePerson'
 import Car from '../lists/Car'
+import { Link } from 'react-router-dom'
 
 const getStyles = () => ({
     card: {
@@ -38,6 +39,7 @@ const Person = props => {
                     ]}>
                     {firstName} {lastName}
                     <Car id={id} people={people} />
+                    <li><Link to={`/people/${id}`}>LEARN MORE</Link></li>
                 </Card>
             }
         </>

@@ -1,3 +1,4 @@
+
 import { List } from 'antd'
 import { useQuery } from '@apollo/client'
 import { GET_PEOPLE } from '../../queries'
@@ -18,20 +19,23 @@ const People = () => {
     if (loading) return 'Loading...';
     if (error) return `Error! ${error.message}`;
 
-    console.log('People data: ', data.people);
-
-    return (
-        <>
-        <AddCar people={data.people}/>
-        <List grid={{gutter: 20, column: 1}} style={styles.list}>
-            {data.people.map(({id, firstName, lastName}) => (
-                <List.Item key={id}>
-                    <Person id={id} firstName={firstName} lastName={lastName} people={data.people} />
-                </List.Item>
-            ))}
-        </List>
-        </>
-    )
+    if (data.people.length < 1) {
+        return <></>
+    }
+    else {
+        return (
+            <>
+            <AddCar people={data.people}/>
+            <List grid={{gutter: 20, column: 1}} style={styles.list}>
+                {data.people.map(({id, firstName, lastName}) => (
+                    <List.Item key={id}>
+                        <Person id={id} firstName={firstName} lastName={lastName} people={data.people} />
+                    </List.Item>
+                ))}
+            </List>
+            </>
+        )
+    }
 }
 
 export default People
