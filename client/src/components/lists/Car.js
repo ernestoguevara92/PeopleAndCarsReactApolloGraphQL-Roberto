@@ -1,8 +1,8 @@
-import { useState } from 'react'
+
 import { List } from 'antd'
 import { useQuery } from '@apollo/client'
 import { GET_CARS } from '../../queries'
-import CarCard from './CarCard'
+import CarCard from '../listItems/CarCard'
 
 const getStyles = () => ({
     card: {

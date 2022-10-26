@@ -3,13 +3,13 @@ import { Card } from 'antd'
 import { EditOutlined } from '@ant-design/icons'
 import RemovePerson from '../buttons/RemovePerson'
 import UpdatePerson from '../forms/UpdatePerson'
-import Car from './Car'
+import Car from '../lists/Car'
 
 const getStyles = () => ({
     card: {
         width: '500px',
         backgroundColor: '#f0f2f5',
-        fontSize: 18,
+        fontSize: 20,
         fontWeight: '700',
     }
 })

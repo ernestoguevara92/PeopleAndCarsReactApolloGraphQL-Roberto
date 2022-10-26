@@ -1,7 +1,5 @@
 import { useState } from 'react'
 import { Card } from 'antd'
-import { useQuery } from '@apollo/client'
-import { GET_CARS } from '../../queries'
 import { EditOutlined } from '@ant-design/icons'
 import RemoveCar from '../buttons/RemoveCar'
 import UpdateCar from '../forms/UpdateCar'
@@ -25,15 +23,6 @@ const CarCard = props => {
 
     const handleButtonClick = () => setEditMode(!editMode);
 
-    const { loading, error, data } = useQuery(GET_CARS, {
-        variables: { personId: id }
-    });
-
-    if (loading) return 'Loading...';
-    if (error) return `Error from Cars component! ${error.message}`; 
-
-    console.log("Person cars data: ", data.personCars);
-
     return (
         <>
             {editMode ?
@@ -50,7 +39,7 @@ const CarCard = props => {
             <Card style={styles.card}
                 actions={[
                     <EditOutlined key='edit' onClick={handleButtonClick} />,
-                    <RemoveCar id={id} />
+                    <RemoveCar id={id} personId={personId} />
                 ]}>
                 {make} {model}, {year}, ${price}
             </Card>

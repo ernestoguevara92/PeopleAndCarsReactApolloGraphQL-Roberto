@@ -1,7 +1,8 @@
 import { Form, Input, Button, InputNumber, Select } from 'antd'
 import { useState, useEffect } from 'react'
 import { useMutation } from '@apollo/client'
-import { UPDATE_CAR } from '../../queries'
+import { UPDATE_CAR, GET_CARS } from '../../queries'
+import { forEach } from 'lodash'
 
 const { Option } = Select
 
@@ -18,18 +19,38 @@ const UpdateCar = props => {
 
     const onFinish = values => {
         const { make, model, year, price, personId } = values
-        
-        updateCar({
-            variables: {
-                id,
-                make,
-                model,
-                year,
-                price,
-                personId
-            }
-        })
+        const currentPersonId = props.personId
+        const newPersonId = personId
+        const idArray = [currentPersonId, newPersonId]
 
+            if (currentPersonId !== newPersonId) {
+                forEach(idArray, i => {
+                    updateCar({
+                        variables: {
+                            id,
+                            make,
+                            model,
+                            year,
+                            price,
+                            personId
+                        },
+                        refetchQueries: [{query: GET_CARS, variables: {personId: i}}]
+                    })
+                })
+                
+            } else {
+                updateCar({
+                    variables: {
+                        id,
+                        make,
+                        model,
+                        year,
+                        price,
+                        personId
+                    },
+                })
+            }
+  
         props.onButtonClick()
     }
 
